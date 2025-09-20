@@ -23,3 +23,8 @@ Database.executeBatch(new SlackUserPhotoBatch(), 200);
 
 // Queueable wrapper (respects TEST_SUPPRESS_EXECUTE in tests)
 System.enqueueJob(new SlackPhotoSyncQueueable(200, 200));
+
+## Code samples
+- [SlackPhotoService.cls](CODE_SAMPLES/SlackPhotoService.cls)
+- [SlackPhotoBatch.cls](CODE_SAMPLES/SlackPhotoBatch.cls)
+- [SlackPhotoServiceTest.cls](CODE_SAMPLES/SlackPhotoServiceTest.cls)
