@@ -1,0 +1,29 @@
+# OS / IDE
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/*
+!.vscode/settings.json
+
+# Salesforce
+.sfdx/
+.sf/
+.localdevserver/
+tools/
+*.log
+*.db
+
+# Keys / env
+*.pem
+*.key
+*.crt
+*.pfx
+*.p12
+.env
+.env.*
+
+# Node / build
+node_modules/
+coverage/
+dist/
+tmp/
