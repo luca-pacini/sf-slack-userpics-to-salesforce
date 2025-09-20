@@ -1,8 +1,41 @@
 ﻿name: validate
-on: [push, pull_request]
+on:
+  push:
+  pull_request:
+
 jobs:
-  ok:
+  validate:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - run: echo repo wired
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Ensure required files exist
+        run: |
+          test -f README.md
+          test -f docs/DIAGRAM.md
+          test -f docs/REDACTION.md
+          test -f docs/ARCHITECTURE.md
+          test -f docs/GOVERNANCE.md
+          test -f docs/SECURITY.md
+          test -f CODE_SAMPLES/SlackPhotoService.cls
+          test -f CODE_SAMPLES/SlackPhotoBatch.cls
+          test -f CODE_SAMPLES/SlackPhotoServiceTest.cls
+
+      - name: Verify Mermaid diagram matches constraints
+        run: |
+          cat docs/DIAGRAM.md | tr -d ' \t' | grep -q '```mermaidflowchartTDUser-->SalesforceSalesforce-->|Event|QueueQueue-->External_System```'
+
+      - name: Redaction guard
+        run: |
+          # Fail if obvious secrets or real hosts were committed.
+          if grep -RniE '(my\.salesforce\.com|login\.salesforce\.com|slack\.com/api|xoxb-|-----BEGIN)' . ; then
+            echo "Potential secret or real host detected. Use placeholders."
+            exit 1
+          fi
+
+      - name: Placeholder policy present
+        run: |
+          grep -Rni 'NC_\[SERVICE\]_JWT' .
+          grep -Rni '\[REDACTED\]' .
+          echo "CI checks complete. No org login or deployments performed."
