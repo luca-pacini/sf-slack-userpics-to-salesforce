@@ -1,4 +1,6 @@
-﻿/**
+// Portfolio sample (REDACTED). Do not use in production.
+// Endpoints, IDs and logic paths are obfuscated. See REDACTION.md.
+/**
  * SlackPhotoServiceTest.cls
  * Pattern: HttpCalloutMock + dependency injection to avoid real ConnectApi calls
  * Role: Validate URL parsing, image fetch, and invocation flow with mocked payloads only.
@@ -79,3 +81,4 @@ private class SlackPhotoServiceTest {
         System.assert(true, 'Batch executed without unhandled exceptions');
     }
 }
+

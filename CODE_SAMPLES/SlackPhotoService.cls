@@ -1,4 +1,6 @@
-﻿/**
+// Portfolio sample (REDACTED). Do not use in production.
+// Endpoints, IDs and logic paths are obfuscated. See REDACTION.md.
+/**
  * SlackPhotoService.cls
  * Pattern: Service + Dependency Injection for photo writing
  * Role: Fetch a user's Slack avatar and set it as the Salesforce profile photo.
@@ -99,3 +101,4 @@ public with sharing class SlackPhotoService {
         return res.getBodyAsBlob();
     }
 }
+

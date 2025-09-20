@@ -1,4 +1,6 @@
-﻿/**
+// Portfolio sample (REDACTED). Do not use in production.
+// Endpoints, IDs and logic paths are obfuscated. See REDACTION.md.
+/**
  * SlackPhotoBatch.cls
  * Pattern: Database.Batchable with callouts and basic failure accounting
  * Role: Iterate active users with a Slack mapping and sync their profile photos.
@@ -39,3 +41,4 @@ global with sharing class SlackPhotoBatch implements Database.Batchable<SObject>
         }
     }
 }
+
