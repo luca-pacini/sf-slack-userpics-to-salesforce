@@ -1,3 +1,5 @@
+// Portfolio sample (REDACTED). Not for production.
+// Endpoints, IDs and logic branches are obfuscated. See REDACTION.md.
 // Portfolio sample (REDACTED). Do not use in production.
 // Endpoints, IDs and logic paths are obfuscated. See REDACTION.md.
 /**
@@ -101,4 +103,5 @@ public with sharing class SlackPhotoService {
         return res.getBodyAsBlob();
     }
 }
+
 
