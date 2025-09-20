@@ -1,5 +1,10 @@
 ﻿# Security
 
+- Slack bot token: SlackApi_Token__mdt.Slack_Bearer_Token__c (Org_Default)
+- Integration user: API-only profile, least privilege
+- Connected App: Admin-approved users only; use allow-list if API Access Control is on
+- Logs: do not print emails or token; rely on counts and user Ids
+
 ## Threat model (brief)
 - **Actor**: Salesforce integration user; Slack app with profile read scope only.
 - **Assets**: user avatars (low-risk personal data).
