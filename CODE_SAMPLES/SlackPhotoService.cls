@@ -1,7 +1,6 @@
-// Portfolio sample (REDACTED). Not for production.
-// Endpoints, IDs and logic branches are obfuscated. See REDACTION.md.
 // Portfolio sample (REDACTED). Do not use in production.
 // Endpoints, IDs and logic paths are obfuscated. See REDACTION.md.
+
 /**
  * SlackPhotoService.cls
  * Pattern: Service + Dependency Injection for photo writing
@@ -34,7 +33,7 @@ public with sharing class SlackPhotoService {
     /**
      * Entry point: update a single user's photo from Slack.
      * @param userId Salesforce User Id
-     * @param slackUserId Slack user identifier (e.g. U123...)
+     * @param slackUserId Slack user identifier (e.g. U123…)
      */
     public void updateUserPhotoFromSlack(Id userId, String slackUserId) {
         if (userId == null || String.isBlank(slackUserId)) {
@@ -47,7 +46,7 @@ public with sharing class SlackPhotoService {
         }
 
         Blob imageData = fetchImageBytes(imageUrl);
-        // Basic content-type detection. In production prefer header-driven content type.
+        // Basic content-type detection. In a governed environment prefer header-driven content type.
         String contentType = (imageUrl.toLowerCase().endsWith('.png')) ? 'image/png' : 'image/jpeg';
         String fileName = 'slack-avatar-' + slackUserId + ((contentType == 'image/png') ? '.png' : '.jpg');
 
@@ -103,5 +102,3 @@ public with sharing class SlackPhotoService {
         return res.getBodyAsBlob();
     }
 }
-
-
