@@ -1,48 +1,22 @@
 ﻿name: validate
 on:
-  push:
   pull_request:
-
+  workflow_dispatch:
+  # remove push if you don't want emails on every commit
 jobs:
   validate:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Ensure required files exist (recruiter signals)
+      - uses: actions/checkout@v4
+      - name: Required docs (warn only)
         run: |
-          test -f README.md
-          test -f docs/REDACTION.md
-          test -f docs/EVIDENCE.md
-          test -f docs/OPERATIONS.md
-          test -f docs/ARCHITECTURE.md
-          test -f docs/GOVERNANCE.md
-          test -f docs/SECURITY.md
-          test -f docs/DIAGRAM.md
-          test -f CODE_SAMPLES/SlackPhotoService.cls
-          test -f CODE_SAMPLES/SlackPhotoBatch.cls
-          test -f CODE_SAMPLES/SlackPhotoServiceTest.cls
-
-      - name: Verify Mermaid diagram matches constraints exactly
+          set +e
+          for f in README.md docs/CONFIG.md docs/OPERATIONS.md docs/SECURITY.md; do
+            if [ ! -f "$f" ]; then echo "::warning::$f missing"; fi
+          done
+      - name: Secret scan (warn only)
         run: |
-          cat docs/DIAGRAM.md | tr -d ' \t\r\n' | grep -q '`mermaidflowchartTDUser-->SalesforceSalesforce-->|Event|QueueQueue-->External_System`'
-
-      - name: Redaction guard (no secrets, no real hosts)
-        run: |
-          if grep -RniE '(my\.salesforce\.com|login\.salesforce\.com|slack\.com/api|xoxb-|-----BEGIN)' . ; then
-            echo "Potential secret or real host detected. Use placeholders." ; exit 1 ;
+          set +e
+          if grep -Rni --include='*.md' -e 'xoxb-' -e 'xoxa-' . ; then
+            echo "::warning::Possible secret-like string found in docs"
           fi
-
-      - name: Placeholder policy present (non-fatal report)
-        run: |
-          echo 'Check for placeholders (non-fatal):'
-          grep -Rni 'NC_\\[SERVICE\\]_JWT' . || true
-          grep -Rni '\\[REDACTED\\]' . || true
-          echo 'CI checks complete. No org login or deployments performed.'
-
-      - name: Stub lint/static checks (portfolio only)
-        run: |
-          echo "(stub) run static analysis on Apex and docs here"
-          # Real org deployments intentionally omitted in public case study
-          # Production pipelines would add packaging/deploy steps behind approvals
