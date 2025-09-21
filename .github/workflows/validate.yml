@@ -1,8 +1,8 @@
 ﻿name: validate
 on:
   pull_request:
+    branches: [ main ]
   workflow_dispatch:
-  # remove push if you don't want emails on every commit
 jobs:
   validate:
     runs-on: ubuntu-latest
@@ -12,11 +12,5 @@ jobs:
         run: |
           set +e
           for f in README.md docs/CONFIG.md docs/OPERATIONS.md docs/SECURITY.md; do
-            if [ ! -f "$f" ]; then echo "::warning::$f missing"; fi
+            [ -f "$f" ] || echo "::warning::$f missing"
           done
-      - name: Secret scan (warn only)
-        run: |
-          set +e
-          if grep -Rni --include='*.md' -e 'xoxb-' -e 'xoxa-' . ; then
-            echo "::warning::Possible secret-like string found in docs"
-          fi

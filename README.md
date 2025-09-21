@@ -1,4 +1,4 @@
-Project Purpose
+﻿Project Purpose
 
 Synchronise Salesforce user profile photos from Slack to keep identities consistent for internal users.
 
@@ -12,7 +12,7 @@ Salesforce, Slack, Gearset
 
 Solution overview and business-driven choices
 
-This integration reads each mapped user’s avatar from Slack and applies it to the corresponding Salesforce user via supported platform APIs. It runs on demand for a single user or as a scheduled batch. Design is native-first to minimise operational surface and align with governance.
+This integration reads each mapped userâ€™s avatar from Slack and applies it to the corresponding Salesforce user via supported platform APIs. It runs on demand for a single user or as a scheduled batch. Design is native-first to minimise operational surface and align with governance.
 
 Native first: Apex service and batch with ConnectApi; Named Credential boundary for outbound calls.
 
@@ -44,7 +44,7 @@ See docs/EVIDENCE.md for artefacts and redaction rules:
 
 BEFORE and AFTER screenshots (faces blurred, names obfuscated).
 
-A 10–20 second GIF of a single-user sync using mocked data.
+A 10â€“20 second GIF of a single-user sync using mocked data.
 
 Screenshot of green Apex tests on mocked callouts (class names only; no code).
 
@@ -62,7 +62,7 @@ Operability quickstart (mocked demo and tests)
 
 Mocked demo: configure a dummy Named Credential to https://api.example.local and exercise the service with mocked responses.
 
-Run tests: Setup → Apex Test Execution → run SlackPhotoServiceTest (all external calls mocked).
+Run tests: Setup â†’ Apex Test Execution â†’ run SlackPhotoServiceTest (all external calls mocked).
 
 Runbook summary (see docs/OPERATIONS.md):
 
