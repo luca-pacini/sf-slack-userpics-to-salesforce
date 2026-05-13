@@ -1,0 +1,24 @@
+{
+  "users": [
+    {
+      "salesforceUserReference": "MOCK_USER_001",
+      "email": "user.one@example.local",
+      "slackUserReference": "SLACK_USER_XXXXX",
+      "photoStatus": "MOCK_PHOTO_AVAILABLE",
+      "syncDecision": "ELIGIBLE"
+    },
+    {
+      "salesforceUserReference": "MOCK_USER_002",
+      "email": "user.two@example.local",
+      "slackUserReference": "SLACK_USER_YYYYY",
+      "photoStatus": "MOCK_PHOTO_MISSING",
+      "syncDecision": "SKIPPED"
+    }
+  ],
+  "calloutResponse": {
+    "source": "[MOCKED DATA]",
+    "workspace": "ORG_XXXXX",
+    "profileImageUrl": "https://api.example.local/mock-profile-image.png",
+    "containsRealUserData": false
+  }
+}
