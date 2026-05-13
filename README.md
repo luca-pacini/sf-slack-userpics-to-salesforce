@@ -1,101 +1,131 @@
-﻿Project Purpose
+# Controlled Slack-to-Salesforce User Photo Synchronisation — Redacted Portfolio Version
 
-Synchronise Salesforce user profile photos from Slack to keep identities consistent for internal users.
+## TL;DR / CV Portfolio Summary
 
-Reason for Starting
+Designed a controlled Salesforce-native synchronisation pattern to improve consistency of Salesforce User profile photos using Slack as the approved image source.
 
-Reduce manual administration, remove stale images, and move ownership in house to improve accuracy and trust in internal identity.
+The solution uses Apex, scheduled processing, mocked callouts and redacted configuration to show the architecture without exposing live Slack or Salesforce implementation details.
 
-Technologies Used
+The public version focuses on least-privilege integration design, secure configuration boundaries, governor-limit-aware processing and operational supportability.
 
-Salesforce, Slack, Gearset
+## Executive Summary
 
-Solution overview and business-driven choices
+Salesforce user profile photos were incomplete or inconsistent, reducing recognisability in record ownership, collaboration and internal user journeys.
 
-This integration reads each mapped userâ€™s avatar from Slack and applies it to the corresponding Salesforce user via supported platform APIs. It runs on demand for a single user or as a scheduled batch. Design is native-first to minimise operational surface and align with governance.
+This project provides a controlled Slack-to-Salesforce synchronisation pattern that retrieves approved Slack profile images and applies them to corresponding Salesforce User profile photos. The architecture keeps the process Salesforce-native where practical, avoids hard-coded credentials and separates public portfolio evidence from sensitive implementation detail.
 
-Native first: Apex service and batch with ConnectApi; Named Credential boundary for outbound calls.
+The repository is intentionally redacted. It is useful for architecture review and interview discussion, not for direct production deployment.
 
-Clear ownership: Slack is the source of truth for avatars; Salesforce presents the mastered image.
+## Implementation Boundary
 
-Scale with control: batching and retries respect external limits and keep runs predictable.
+| Area | Public repository treatment |
+| --- | --- |
+| Salesforce Apex pattern | Real architecture pattern, with sensitive logic redacted or abstracted where required |
+| Slack API access | [ABSTRACTED LOGIC] with no live endpoint, token or workspace detail |
+| Credentials | [REDACTED]; represented only by safe Named Credential guidance |
+| User matching | [ABSTRACTED LOGIC]; no real email, Slack user ID, Salesforce User ID or internal mapping exposed |
+| Test data | [MOCKED DATA] only |
+| Screenshots or evidence | [SANITISED EXAMPLE] only, if added later |
+| Deployment scripts | [DO NOT PUBLISH] unless fully sanitised |
+| Production configuration | [REDACTED] |
+| Measured impact | [NEEDS DETAIL] if real numbers are not available |
 
-Change governance: Gearset promotion with peer review and evidence enables traceability and rollback.
+## Business Context
 
-Architecture diagram
-flowchart TD
-  User --> Salesforce
-  Salesforce -->|Event| Queue
-  Queue --> External_System
+The business issue was not the photo itself. The issue was inconsistent internal identity across Salesforce user interfaces.
 
-Outcomes (metrics)
+Missing or stale User profile photos make ownership, collaboration and handover less clear, especially in teams that rely on Salesforce records for operational work. Manual profile maintenance does not scale well and creates avoidable administration.
 
-Representative portfolio metrics; not client data.
+## Solution Overview
 
-Users updated: 200
+The solution uses Salesforce-hosted automation to synchronise user profile images from Slack into Salesforce in a controlled way.
 
-Sync success rate: 99 percent
+At a high level:
 
-Average run time for 200 users: 8 seconds
+1. A scheduled Salesforce process identifies eligible users.
+2. Apex retrieves approved Slack profile-photo data through a secure callout boundary.
+3. User matching is handled by redacted internal logic.
+4. Salesforce user photos are updated through supported platform mechanisms.
+5. Errors are handled without logging secrets, tokens, raw identifiers or sensitive payloads.
 
-Evidence pack (portfolio-safe)
+## Architecture Summary
 
-See docs/EVIDENCE.md for artefacts and redaction rules:
+| Layer | Responsibility |
+| --- | --- |
+| Scheduled Apex | Starts the controlled synchronisation process |
+| Batch Apex | Processes users in safe chunks to respect Salesforce governor limits and external limits |
+| Apex service layer | Encapsulates Slack retrieval, matching and Salesforce update orchestration |
+| Named Credential | Holds external authentication configuration outside code |
+| Mocked callout tests | Validate behaviour without live Slack access or real user data |
+| Redaction boundary | Prevents public exposure of credentials, org identifiers, usernames, email addresses and matching logic |
 
-BEFORE and AFTER screenshots (faces blurred, names obfuscated).
+The architecture favours a Salesforce-native pattern to reduce operational surface area. External middleware is not required for the public pattern shown here.
 
-A 10â€“20 second GIF of a single-user sync using mocked data.
+## Security and Scalability Summary
 
-Screenshot of green Apex tests on mocked callouts (class names only; no code).
+Security controls shown or required:
 
-Security and compliance summary
+| Control | Purpose |
+| --- | --- |
+| Named Credential | Keeps external authentication out of Apex code |
+| No hard-coded secrets | Prevents token exposure through source control |
+| Least-privilege integration access | Limits the blast radius of the Slack integration |
+| Redacted matching logic | Avoids exposing private user-mapping rules |
+| Mocked test data | Avoids real user data in public tests |
+| Safe logging | Avoids tokens, raw identifiers, payloads and personal data in logs |
+| Permission Sets | Provides explicit Salesforce access assignment where required |
 
-Secret boundary: Named Credential NC_[SERVICE]_JWT managed by admins.
+Scalability controls shown or required:
 
-Admin-approved Connected App; access restricted by permission set.
+| Control | Purpose |
+| --- | --- |
+| Batch Apex | Processes users in controlled chunks |
+| Scheduled Apex | Provides predictable execution without manual admin effort |
+| Service-layer separation | Keeps orchestration, callouts and update behaviour maintainable |
+| Governor-limit awareness | Avoids synchronous bulk update risk |
+| Mocked callouts | Keeps tests reliable and independent of Slack availability |
 
-API-only integration user; credentials rotated per policy. No secrets or endpoints in code or history.
+## Governance and Delivery
 
-Further detail and a documentation-only .env.template: docs/SECURITY.md.
+The public repository is treated as a redacted portfolio artefact.
 
-Operability quickstart (mocked demo and tests)
+Delivery principles:
 
-Mocked demo: configure a dummy Named Credential to https://api.example.local and exercise the service with mocked responses.
+- Sandbox-first build and validation.
+- Source-controlled repository.
+- Gearset promotion only if actually used in the private implementation.
+- Peer review and regression testing before production deployment, where applicable.
+- No live secrets, internal URLs, org identifiers or real user data in GitHub.
+- Human publishing gate before making evidence public.
 
-Run tests: Setup â†’ Apex Test Execution â†’ run SlackPhotoServiceTest (all external calls mocked).
+## Impact
 
-Runbook summary (see docs/OPERATIONS.md):
+[NEEDS DETAIL: measured impact requires real figures. Do not publish invented metrics.]
 
-Recommended batch size: 50 to 200 users.
+Observed impact:
 
-Failure modes: 429 responses, invalid token, no Slack mapping, image fetch errors.
+Improved consistency of Salesforce User profile photos and reduced manual profile-photo maintenance. This is a cautious observed outcome, not a measured claim.
 
-Recovery: back off and retry; rotate credential in admin console; correct mappings; target reruns for failed users only.
+## What I Would Improve Next
 
-Scope (API names only)
-Category	API name(s)
-Object(s) touched	User
-Fields referenced	User.Slack_User_Id__c, User.Id
-Apex classes	SlackPhotoService, SlackPhotoBatch, SlackPhotoServiceTest
-Required metadata	NamedCredential.NC_[SERVICE]_JWT, permission set for API-only integration user, Gearset pipeline configuration (evidence only)
-Limitations and trade-offs
+Future evolution would include:
 
-External limits govern throughput; schedule large updates off peak.
+- A small admin-facing dashboard for sync status, skipped users and failures.
+- More explicit retry visibility for failed photo retrieval or update attempts.
+- Stronger operational reporting for rate-limit events and skipped records.
+- A documented manual reprocessing path for selected users.
+- More complete mocked setup guidance for portfolio reviewers.
 
-Avatar URLs may require authorised fetch; use a Named Credential or an approved proxy.
+## Recruiter Summary
 
-Users may change photos manually unless governed by policy.
+This project shows practical Salesforce architecture thinking around a small but real operational problem. It combines business usability, secure integration design, controlled automation, source-control hygiene and public-safe redaction.
 
-Demo
+The value is in the design discipline: native Salesforce automation, secure Slack integration boundaries, non-disclosure of sensitive data and a maintainable pattern that can be explained clearly in interview.
 
-Portfolio demo GIF (blur icons and any names): docs/evidence/SYNC_DEMO.gif (~15 seconds). No org IDs or real endpoints.
+## Technical Reviewer Summary
 
-IP notice, licence, links
+This project demonstrates a Salesforce-native integration pattern using scheduled and batch Apex, a service-layer boundary, mocked external callouts and secure configuration through Named Credentials.
 
-IP notice: Case study. Redacted. No redistribution.
+The main design trade-off is deliberate: the public version prioritises safe architectural evidence over copyable production implementation. Sensitive matching logic, real identifiers, credentials and deployment details are intentionally excluded.
 
-Redaction policy and placeholders: docs/REDACTION.md.
-
-Licence: Apache-2.0 (illustrative and partially redacted).
-
-GitHub: https://github.com/luca-pacini/sf-slack-userpics-to-salesforce
+The repository should be reviewed as a redacted architecture case study, not as a deployable package.
