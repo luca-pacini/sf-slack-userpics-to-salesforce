@@ -1,17 +1,86 @@
-﻿# Redaction and Placeholder Policy
+# Redaction Notice
 
-Redactions protect confidentiality whilst keeping the repository evaluable. Use mocked or obfuscated data only. Replace any sensitive value with the placeholders below.
+This repository is a redacted Salesforce portfolio artefact. It is designed for public review without exposing private implementation details.
 
-| Placeholder                                            | Represents                            | Rationale                                         | Safe example value                                     |
-| ------------------------------------------------------ | ------------------------------------- | ------------------------------------------------- | ------------------------------------------------------ |
-| \[REDACTED]                                            | Sensitive text removed                | Prevents disclosure of internal details           | \[REDACTED]                                            |
-| \[MOCKED]                                              | Fabricated data used in tests or docs | Demonstrates behaviour without real data          | \[MOCKED]                                              |
-| \[OBFUSCATED]                                          | Irreversibly masked identifier        | Avoids re‑identification from partial IDs         | 9f2a\*\*\*\*e1c                                        |
-| \[DUMMY\_CREDENTIAL]                                   | Non‑functional token or key           | Ensures no live secret appears in code or history | dummy-token-123                                        |
-| ORG\_XXXXX                                             | Internal org identifier               | Avoids exposing tenant information                | ORG\_12345                                             |
-| [https://api.example.local](https://api.example.local) | External API base URL                 | Prevents leaking real endpoints                   | [https://api.example.local](https://api.example.local) |
-| NC\_\[SERVICE]\_JWT                                    | Named Credential label in Salesforce  | Hides actual system names whilst showing intent   | NC\_\[SERVICE]\_JWT                                    |
+## Publishing Boundary
 
-**Never commit**: real hostnames, usernames, org IDs, OAuth tokens, certificates, mapping tables, schedules, or environment details. Keep production values in admin‑managed configuration only.
+The repository may explain:
 
-**IP notice**: Case study. Redacted. No redistribution.
+- The business problem.
+- The Salesforce architecture pattern.
+- The secure integration boundary.
+- The scalability approach.
+- The trade-offs and future improvements.
+
+The repository must not expose:
+
+- Credentials.
+- Tokens.
+- Secrets.
+- Salesforce org IDs.
+- Slack workspace IDs.
+- Slack user IDs.
+- Real Salesforce User IDs.
+- Internal URLs.
+- Real customer data.
+- Exact field mappings.
+- Production deployment scripts.
+- Proprietary matching rules.
+- Real usernames.
+- Real email addresses.
+- Sensitive logs.
+- Package licence keys.
+- Private Slack channels.
+- Private Salesforce, Slack or third-party configuration.
+- Live Named Credential details.
+
+## Approved Placeholders
+
+| Placeholder | Meaning |
+| --- | --- |
+| `[REDACTED]` | Sensitive text removed |
+| `[MOCKED DATA]` | Fabricated data used for tests or examples |
+| `[ABSTRACTED LOGIC]` | Real logic exists privately but is not safe to publish |
+| `[DUMMY_CREDENTIAL]` | Non-functional credential placeholder |
+| `ORG_XXXXX` | Placeholder for org or tenant reference |
+| `SLACK_USER_XXXXX` | Placeholder for Slack user reference |
+| `MOCK_USER_001` | Placeholder for Salesforce user reference |
+| `https://api.example.local` | Non-live example endpoint |
+| `NC_SLACK_REDACTED` | Placeholder Named Credential |
+
+## Evidence Rules
+
+Screenshots, diagrams and demos must use mocked or heavily obfuscated data.
+
+Do not include:
+
+- Faces unless permission exists and the image is not sensitive.
+- Names.
+- Emails.
+- Record IDs.
+- Ticket numbers.
+- Hostnames.
+- Internal Slack channels.
+- Production timestamps.
+
+## Human Publishing Gate
+
+Do not publish this repository until the human publishing gate has been completed independently, away from the generated output.
+
+The repository is only publishable if every answer is YES.
+
+If any answer is NO, the relevant file must be revised or marked `[DO NOT PUBLISH]`.
+
+Manual checklist:
+
+- Is anything sensitive exposed, including org IDs, usernames, emails, URLs, credentials, object mappings, business rules, logs, tokens or internal system details?
+- Can every Architecture Decision Record (ADR) be explained out loud without notes?
+- Is every metric real, estimated honestly or clearly marked as observed impact?
+- Can every security claim be defended in interview?
+- Is it clear why each technology was used?
+- Is it clear what was deliberately redacted and why?
+- Does the repository show Salesforce Technical Design Architect (TDA) thinking rather than just implementation?
+- Would this survive review by a Salesforce architect?
+- Does this sound like the actual project, not a generic Artificial Intelligence (AI) rewrite?
+
+If any answer is NO, mark the relevant section as `[NEEDS DETAIL]` or `[DO NOT PUBLISH]`.
